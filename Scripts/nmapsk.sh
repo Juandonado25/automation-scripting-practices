@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # ============================================================
-#  nmapscan.sh — Escáner Nmap para Kali Linux
-#  Uso: ./nmapscan.sh <-l|-q> <ip/host>
+#  nmapsk.sh — Escáner Nmap para Kali Linux
+#  Uso: ./nmapsk.sh <-l|-q> <ip/host>
 # ============================================================
 
 RED='\033[0;31m'
