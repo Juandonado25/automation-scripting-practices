@@ -22,10 +22,10 @@ class Macchanger:
 		return options
 
 	def change_mac(self,interface,new_mac):
-        print(f"[+] Changing MAC address of interface '{interface}' to '{new_mac}'...")
-	    subprocess.call(["sudo","ifconfig",interface,"down"])
-        subprocess.call(["sudo","ifconfig",interface,"hw","ether",new_mac])
-        subprocess.call(["sudo","ifconfig",interface,"up"])
+		print(f"[+] Changing MAC address of interface '{interface}' to '{new_mac}'...")
+		subprocess.call(["sudo","ifconfig",interface,"down"])
+		subprocess.call(["sudo","ifconfig",interface,"hw","ether",new_mac])
+		subprocess.call(["sudo","ifconfig",interface,"up"])
 		print(f"[+] MAC address changed successfully.")
 	
 def main():
