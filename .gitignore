@@ -1,2 +1,3 @@
 .obsidian
-ssh_security_check/*
+Scripts/ssh_security_check/
+Scripts/nmapsk/

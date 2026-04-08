@@ -1,18 +1,18 @@
-import subprocess
-import argparse
-import re
+import subprocess,argparse,re
 
 class Macchanger:
 	def validate_mac(self,mac):
-		"""Validates MAC address format XX:XX:XX:XX:XX:XX"""
+		"""Validates MAC address format using a regular expression."""
 		pattern = r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$"
 		return re.match(pattern, mac) is not None
 	
 	def validate_interface(self,interface):
+		"""Validates if the specified network interface exists on the system."""
 		result = subprocess.run(["ip","link","show",interface], capture_output=True)
 		return result.returncode == 0
 
 	def get_arguments(self):
+		"""Parses command-line arguments and validates them."""
 		parser = argparse.ArgumentParser()
 		parser.add_argument("-i","--interface",dest="interface",help="interface to change its MAC address")
 		parser.add_argument("-m","--mac",dest="new_mac",help="New MAC address")
@@ -28,6 +28,7 @@ class Macchanger:
 		return options
 
 	def change_mac(self,interface,new_mac):
+		"""Changes the MAC address of the specified interface to the new MAC address."""
 		print(f"[+] Changing MAC address of interface '{interface}' to '{new_mac}'...")
 		subprocess.call(["sudo","ifconfig",interface,"down"])
 		subprocess.call(["sudo","ifconfig",interface,"hw","ether",new_mac])
