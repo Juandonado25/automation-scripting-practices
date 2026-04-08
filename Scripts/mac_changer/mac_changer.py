@@ -12,7 +12,7 @@ class Macchanger:
         result = subprocess.run(["ip","link","show",interface], capture_output=True)
 		return result.returncode == 0
 
-	def get_arguments(self):
+    def get_arguments(self):
 		parser = argparse.ArgumentParser()
 		parser.add_argument("-i","--interface",dest="interface",help="interface to change its MAC address")
 		parser.add_argument("-m","--mac",dest="new_mac",help="New MAC address")
