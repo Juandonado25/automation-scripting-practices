@@ -8,11 +8,11 @@ class Macchanger:
 		pattern = r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$"
 		return re.match(pattern, mac) is not None
 	
-    def validate_interface(self,interface):
+	def validate_interface(self,interface):
 		result = subprocess.run(["ip","link","show",interface], capture_output=True)
 		return result.returncode == 0
 
-    def get_arguments(self):
+	def get_arguments(self):
 		parser = argparse.ArgumentParser()
 		parser.add_argument("-i","--interface",dest="interface",help="interface to change its MAC address")
 		parser.add_argument("-m","--mac",dest="new_mac",help="New MAC address")
@@ -20,7 +20,7 @@ class Macchanger:
 		if not options.interface:
 			parser.error("[-] Please specify an interface, use --help for more info.")
 		elif not self.validate_interface(options.interface):
-		    parser.error(f"[-] Interface '{options.interface}' not found or invalid.")
+			parser.error(f"[-] Interface '{options.interface}' not found or invalid.")
 		elif not options.new_mac:
 			parser.error("[-] Please specify a new MAC address. use --help for more info.")
 		elif not self.validate_mac(options.new_mac):
