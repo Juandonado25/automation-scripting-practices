@@ -9,7 +9,7 @@ class Macchanger:
 		return re.match(pattern, mac) is not None
 	
     def validate_interface(self,interface):
-        result = subprocess.run(["ip","link","show",interface], capture_output=True)
+		result = subprocess.run(["ip","link","show",interface], capture_output=True)
 		return result.returncode == 0
 
     def get_arguments(self):
@@ -19,7 +19,7 @@ class Macchanger:
 		options = parser.parse_args()
 		if not options.interface:
 			parser.error("[-] Please specify an interface, use --help for more info.")
-		elif not self.validate_interface(options.interface)
+		elif not self.validate_interface(options.interface):
 		    parser.error(f"[-] Interface '{options.interface}' not found or invalid.")
 		elif not options.new_mac:
 			parser.error("[-] Please specify a new MAC address. use --help for more info.")
