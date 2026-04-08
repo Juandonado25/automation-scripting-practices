@@ -40,10 +40,10 @@ python3 mac_changer.py -i <interfaz> -m <nueva_mac>
 
 ### Argumentos
 
-|Argumento|Alias|Descripción|
+| Argumento | Alias | Descripción |
 |---|---|---|
-|`--interface`|`-i`|Nombre de la interfaz de red (ej: `eth0`, `wlan0`)|
-|`--mac`|`-m`|Nueva dirección MAC en formato `XX:XX:XX:XX:XX:XX`|
+| `--interface` | `-i` | Nombre de la interfaz de red (ej: `eth0`, `wlan0`) |
+| `--mac` | `-m` | Nueva dirección MAC en formato `XX:XX:XX:XX:XX:XX` |
 
 ### Ejemplo
 
@@ -54,7 +54,7 @@ python3 mac_changer.py -i eth0 -m 00:66:22:77:11:88
 **Salida esperada:**
 
 ```
-[*] Changing MAC address of 'eth0' to '00:66:22:77:11:88'...
+[+] Changing MAC address of interface 'eth0' to '00:66:22:77:11:88'...
 [+] MAC address changed successfully.
 ```
 
@@ -64,13 +64,14 @@ python3 mac_changer.py -i eth0 -m 00:66:22:77:11:88
 
 ### Clase `Macchanger`
 
-#### `get_arguments()`
+#### `validate_interface(interface)`
 
-Parsea y valida los argumentos de línea de comandos usando `argparse`.
+Verifica que la interfaz de red exista en el sistema ejecutando `ip link show`. Si el comando retorna un código distinto de 0, la interfaz no existe.
 
-- Verifica que se haya indicado una interfaz (`-i`).
-- Verifica que se haya indicado una MAC (`-m`).
-- Valida el formato de la MAC con expresión regular.
+```python
+result = subprocess.run(["ip", "link", "show", interface], capture_output=True)
+return result.returncode == 0
+```
 
 #### `validate_mac(mac)`
 
@@ -79,6 +80,15 @@ Valida que la dirección MAC tenga el formato correcto `XX:XX:XX:XX:XX:XX`.
 ```python
 pattern = r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$"
 ```
+
+#### `get_arguments()`
+
+Parsea y valida los argumentos de línea de comandos usando `argparse`. Las validaciones se ejecutan en este orden:
+
+1. Que se haya indicado una interfaz (`-i`).
+2. Que la interfaz exista en el sistema (`validate_interface`).
+3. Que se haya indicado una MAC (`-m`).
+4. Que el formato de la MAC sea válido (`validate_mac`).
 
 #### `change_mac(interface, new_mac)`
 
@@ -94,11 +104,11 @@ subprocess.call(["sudo", "ifconfig", interface, "up"])
 
 ## Módulos utilizados
 
-|Módulo|Uso|
+| Módulo | Uso |
 |---|---|
-|`subprocess`|Ejecutar comandos del sistema operativo|
-|`argparse`|Parseo y validación de argumentos de CLI|
-|`re`|Validación del formato de la dirección MAC|
+| `subprocess` | Ejecutar comandos del sistema operativo y verificar interfaces |
+| `argparse` | Parseo y validación de argumentos de CLI |
+| `re` | Validación del formato de la dirección MAC |
 
 ---
 
